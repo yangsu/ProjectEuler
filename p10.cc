@@ -1,28 +1,34 @@
 #include <vector>
+#define MAX 2000000
 using namespace std;
+
+bool test(char* bits, int index) {
+  return bits[index/8] & 0x1 << (index%8);
+}
+
+void set(char* bits, int index) {
+  bits[index/8] |= 0x1 << (index%8);
+}
+
 int main(int argc, char const *argv[]) {
-  vector<unsigned int> primes;
-  unsigned int num = 2, n = 0, sum = 2;
-  bool prime;
-  while (num < 200000) {
-    if(num & 0x1 == 0) {
-      num++;
-      continue;
-    }
-    prime  = true;
-    for (unsigned int i = 0; i < primes.size(); ++i) {
-      if (num%primes[i] == 0) {
-        prime = false;
-        break;
+  char bits[MAX/8+1];
+  memset(bits, 0, MAX/8+1);
+  
+  unsigned int count = 0, i = 2;
+  unsigned long sum = 0, temp;
+  while (i < MAX) {
+    if (!test(bits, i)) { // Not present in the bitfield => Prime
+      sum += i;
+      count += 1;
+      // Populate Multiples
+      temp = i;
+      while (temp < MAX) {
+        set(bits, temp);
+        temp += i;
       }
     }
-    if (prime) {
-      primes.push_back(num);
-      sum += num;
-      n++;
-    }
-    num++;
+    i += 1;
   }
-  printf("last of %d primes: %u sum %u\n", primes.size(), primes.back(), sum);
+  printf("%u primes, sum %lu\n", count, sum);
   return 0;
 }
