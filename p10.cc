@@ -1,4 +1,5 @@
-#include <vector>
+#include <stdio.h>
+#include <string.h>
 #define MAX 2000000
 using namespace std;
 
@@ -12,7 +13,7 @@ void set(char* bits, int index) {
 
 int main(int argc, char const *argv[]) {
   char bits[MAX/8+1];
-  memset(bits, 0, MAX/8+1);
+  memset(bits, 0, MAX/8+1); //Clear Memory
   
   unsigned int count = 0, i = 2;
   unsigned long sum = 0, temp;
